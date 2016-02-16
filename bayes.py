@@ -34,41 +34,94 @@ def filter_virus(patients, value):
 	for el in patients:
 		if el.virus==value: yield el
 
-# method to filter patients by sex
+# method to filter patients by sex for positive
 def filter_gender_positives(patients, value):
 	for el in patients:
 		if (el.gender==value and el.virus=="Y"): yield el
 
-def filter_blood_positive(patients):
+def filter_blood_positives(patients,value):
 	for el in patients:
-		if (el.blood == "A+" or el.blood == "B+" or el.blood == "O+"): yield el
+		if (el.blood.endswith(value) and el.virus == "Y"): yield el
 
-def filter_blood_negative(patients):
+def filter_blood_negative(patients, value):
 	for el in patients:
-		if (el.blood == "A-" or el.blood == "B-" or el.blood == "O-"): yield el
+		if (el.blood.endswith(value) and el.virus == "N"): yield el
+
+def filer_weight_heavy(patients):
+	for el in patients:
+		if (el.weight > 170): yield el
+
+def filter_weight_light(patients):
+	for el in patients:
+		if (el.weight <= 170): yield el
 
 
-def main():
+def model():
 	data = []
 	data = build_array()
 	print(str(len(data)) + " Patients total")
 	
+	patient_count = len(data)
+
 	# the next few lines build a list of Male, Females, Patients with virus, Patients witout virus, Male Positives, Female positives, etc.
 	# then prints out the size of these lists.  This is not idiomatic python, object orientation came later on and feels kinda clunky but works.
 	males = list(filter_gender(data, "male"))
 	females = list(filter_gender(data, "female"))
 	print(str(len(females)) + " Females")
+	female_count = len(females)
 	print(str(len(males)) + " Males")
+	males_count = len(males)
 
-	virus_positives = list(filter_virus(data, "Y"))
-	virus_negatives = list(filter_virus(data, "N"))
-	print(str(len(virus_positives)) + " Patients positive for virus")
-	print(str(len(virus_negatives)) + " Patients negative for virus")
+	with_virus_list = list(filter_virus(data, "Y"))
+	with_virus_count = len(with_virus_list)
+	no_virus_list = list(filter_virus(data, "N"))
+	no_virus_count = len(no_virus_list)
 
-	male_positives = list(filter_gender_positives(data, "male"))
-	female_positives = list(filter_gender_positives(data, "female"))
-	print(str(len(male_positives)) + " Male positives")
-	print(str(len(female_positives)) + " Female positives")
+	print(str(len(with_virus_list)) + " Patients with virus")
+	print(str(len(no_virus_list)) + " Patients without virus")
 
+	male_virus_list = list(filter_gender_positives(data, "male"))
+	female_virus_list = list(filter_gender_positives(data, "female"))
+	print(str(len(male_virus_list)) + " Males with virus")
+	print(str(len(female_virus_list)) + " Female with virus")
+	female_positive_count = len(female_virus_list)
+	female_negative_count = female_count - female_positive_count
 
-main()
+	positive_blood_with_virus = list(filter_blood_positives(data, "+"))
+	positive_blood_with_virus_count = len(positive_blood_with_virus)
+	print(str(positive_blood_with_virus_count) + " Positive blood type who have virus")
+	
+	negative_blood_with_virus = list(filter_blood_positives(data, "-"))
+	negative_blood_with_virus_count = len(negative_blood_with_virus)
+	print(str(negative_blood_with_virus_count) + " Negative blood type who have virus")
+
+	print("\n\nStart of Model Calculations\n")
+	
+	# p(gender = f | virus = y)
+	liklihood_gender_female_positive = (float(female_positive_count)/float(with_virus_count))
+	print (str(liklihood_gender_female_positive) + " p(gender =f | virus = y)" )
+	
+	liklihood_gender_female_negative = (float(female_negative_count)/float(no_virus_count))
+	print(str(liklihood_gender_female_negative) + " p(gender =f | virus = n)")
+	
+	liklihood_gender_male_positive = 1 - liklihood_gender_female_positive
+	print(str(liklihood_gender_male_positive) + " p(gender =m | virus =y)")
+	
+	liklihood_gender_male_negatives = 1 - liklihood_gender_female_negative
+	print(str(liklihood_gender_male_negatives) + " p(gender =m | virus =n)\n")
+
+	# liklihood_blood_types 
+	# p(type = + | virus = y)
+	# p(type = - | virus = n)   need to finish this part of the model...
+	liklihood_positive_blood_with_virus = (float(positive_blood_with_virus_count)/float(with_virus_count))
+	print(str(liklihood_positive_blood_with_virus) + " p(type = + | virus = y)")
+	liklihood_positive_blood_no_virus = (float(positive_blood_with_no_virus_count)/float(with_virus_count)
+
+	liklihood_negative_blood_with_virus = 1 - liklihood_positive_blood_with_virus
+	print(str(liklihood_negative_blood_with_virus) + " p(type = - | virus = y)")
+	liklihood_negative_blood_no_virus = 1 - 
+
+	# liklihood_for_weights
+	# p(weight > 170 | virus = y) 
+
+model()
