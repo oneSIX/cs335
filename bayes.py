@@ -56,7 +56,7 @@ def filter_weight_light(patients):
 		if (el.weight <= 170): yield el
 
 
-def model():
+def main():
 	data = []
 	data = build_array()
 	print(str(len(data)) + " Patients total")
@@ -96,6 +96,12 @@ def model():
 	print(str(negative_blood_with_virus_count) + " Negative blood type who have virus")
 
 	print("\n\nStart of Model Calculations\n")
+
+	#priors for the probability of both patients who have the virus and those that do not: p(virus=y), p(virus=n).
+	prior_not_virus = (float(no_virus_count)/float(patient_count))
+	print(str(prior_not_virus) + " p(patient | virus = n)")
+	prior_virus = (float(with_virus_count)/float(patient_count))
+	print(str(prior_virus) + " p(patient | virus = y)\n\n")
 	
 	# p(gender = f | virus = y)
 	liklihood_gender_female_positive = (float(female_positive_count)/float(with_virus_count))
@@ -112,16 +118,18 @@ def model():
 
 	# liklihood_blood_types 
 	# p(type = + | virus = y)
-	# p(type = - | virus = n)   need to finish this part of the model...
-	liklihood_positive_blood_with_virus = (float(positive_blood_with_virus_count)/float(with_virus_count))
-	print(str(liklihood_positive_blood_with_virus) + " p(type = + | virus = y)")
-	liklihood_positive_blood_no_virus = (float(positive_blood_with_no_virus_count)/float(with_virus_count)
+	# p(type = - | virus = n) 
+	liklihood_blood_positive_with_virus = (float(positive_blood_with_virus_count)/float(with_virus_count))
+	print(str(liklihood_blood_positive_with_virus) + " p(type = + | virus = y)")
+	liklihood_positive_blood_no_virus = 1 - liklihood_blood_positive_with_virus
+	print(str(liklihood_positive_blood_no_virus) + " p(type = + | virus = n)")
 
-	liklihood_negative_blood_with_virus = 1 - liklihood_positive_blood_with_virus
+	liklihood_negative_blood_with_virus = (float(negative_blood_with_virus_count)/float(with_virus_count))
 	print(str(liklihood_negative_blood_with_virus) + " p(type = - | virus = y)")
-	liklihood_negative_blood_no_virus = 1 - 
+	liklihood_negative_blood_no_virus = 1 - liklihood_negative_blood_with_virus
+	print(str(liklihood_negative_blood_no_virus) + " p(type = - | virus = n)")
 
 	# liklihood_for_weights
 	# p(weight > 170 | virus = y) 
 
-model()
+main()
