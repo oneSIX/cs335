@@ -47,14 +47,21 @@ def filter_blood_negative(patients, value):
 	for el in patients:
 		if (el.blood.endswith(value) and el.virus == "N"): yield el
 
-def filer_weight_heavy(patients):
+def filer_weight_heavy_positives(patients):
 	for el in patients:
-		if (el.weight > 170): yield el
+		if (el.weight >= 170 and el.virus == "Y"): yield el
 
-def filter_weight_light(patients):
+def filer_weight_heavy_negatives(patients):
 	for el in patients:
-		if (el.weight <= 170): yield el
+		if (el.weight >= 170 and el.virus == "N"): yield el
 
+def filter_weight_light_positives(patients):  # add virus stuff
+	for el in patients:
+		if (el.weight < 170 and el.virus == "Y"): yield el
+
+def filter_weight_light_negatives(patients):  # add virus stuff
+	for el in patients:
+		if (el.weight < 170 and el.virus == "N"): yield el
 
 def main():
 	data = []
@@ -95,6 +102,17 @@ def main():
 	negative_blood_with_virus_count = len(negative_blood_with_virus)
 	print(str(negative_blood_with_virus_count) + " Negative blood type who have virus")
 
+	# likelihood for weight: p(weight >= 170 | virus=y), p(weight>170 | virus=n)
+	heavy_weight_with_virus = list(filer_weight_heavy_positives(data))
+	heavy_weight_with_virus_count = len(heavy_weight_with_virus)
+	print(str(heavy_weight_with_virus_count) + " Above 170LBS with virus")
+
+	# liklihood for weight: p(weight < 170 | virus = y)
+	light_weight_with_virus = list(filter_weight_light_positives(data))
+	light_weight_with_virus_count = len(light_weight_with_virus)
+	print(str(light_weight_with_virus_count) + " Equal or Below 170lbs with virus")
+
+
 	print("\n\nStart of Model Calculations\n")
 
 	#priors for the probability of both patients who have the virus and those that do not: p(virus=y), p(virus=n).
@@ -131,5 +149,11 @@ def main():
 
 	# liklihood_for_weights
 	# p(weight > 170 | virus = y) 
+	liklihood_for_weights_heavy_with_virus = (float(heavy_weight_with_virus_count)/float(with_virus_count))
+	print(str(heavy_weight_with_virus_count) + " p(weight > 170 | virus = Y")
+
+
+
+	# todo finish weights part, stuff all that shit into a model object of variables. start on predictions method
 
 main()
