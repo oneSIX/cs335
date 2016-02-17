@@ -95,7 +95,7 @@ def model():
     light_weight_with_virus = list(filter_weight_light_positives(data))
     light_weight_with_virus_count = len(light_weight_with_virus) 
     
-    # helper print statements 
+    #helper print statements 
     
     print(str(len(males)) + " Males")
     print(str(len(females)) + " Females")
@@ -127,17 +127,22 @@ def model():
     liklihood_gender_male_negatives = 1 - liklihood_gender_female_negative
     print("likelikhood for male given not virus: " + str(liklihood_gender_male_negatives))
 
+
+
     liklihood_blood_positive_with_virus = (float(positive_blood_with_virus_count) / float(with_virus_count))
     print("likelihood for blood positive given virus: " + str(liklihood_blood_positive_with_virus))
     
-    liklihood_positive_blood_no_virus = 1 - liklihood_blood_positive_with_virus
+    liklihood_positive_blood_no_virus =  1 - liklihood_negative_blood_no_virus
     print("likelikhood for blood positive given not virus: " + str(liklihood_positive_blood_no_virus))
 
     liklihood_negative_blood_with_virus = (float(negative_blood_with_virus_count) / float(with_virus_count))
     print("likelikhood for blood negative given virus: " + str(liklihood_negative_blood_with_virus))
 
-    liklihood_negative_blood_no_virus = 1 - liklihood_negative_blood_with_virus
+    liklihood_negative_blood_no_virus = 1 - liklihood_positive_blood_no_virus
     print("likelikhood for blood negative given not virus: " + str(liklihood_negative_blood_no_virus))
+
+
+
 
     liklihood_for_weights_heavy_with_virus = (float(heavy_weight_with_virus_count) / float(with_virus_count))
     print("likelihood for weight > 170 given virus: " + str(liklihood_for_weights_heavy_with_virus))
