@@ -2,11 +2,11 @@ from Patient import Patient
 import csv
 
 
-def build_array():
+def build_array(file_to_open):
     patient_array = []
 
     try:
-        training_reader = csv.reader(open("proj1train.txt"))
+        training_reader = csv.reader(open(file_to_open))
         for row in training_reader:
             training = Patient((int(row[0])), row[1], row[2], row[3], row[4])
             patient_array.append(training)
@@ -71,7 +71,7 @@ def filter_weight_light_negatives(patients):  # add virus stuff
 
 def model():
     data = []
-    data = build_array()
+    data = build_array("proj1train.txt")
     
     patient_count = len(data)
     males = list(filter_gender(data, "male"))
@@ -96,18 +96,18 @@ def model():
     light_weight_with_virus_count = len(light_weight_with_virus) 
     
     # helper print statements 
-    #
-    # print(str(len(males)) + " Males")
-    # print(str(len(females)) + " Females")
-    # print(str(len(with_virus_list)) + " Patients with virus")
-    # print(str(len(no_virus_list)) + " Patients without virus")
-    # print(str(len(male_virus_list)) + " Males with virus")
-    # print(str(len(female_virus_list)) + " Female with virus")
-    # print(str(positive_blood_with_virus_count) + " Positive blood type who have virus")
-    # print(str(negative_blood_with_virus_count) + " Negative blood type who have virus")
-    # print(str(heavy_weight_with_virus_count) + " Above 170LBS with virus")
-    # print(str(light_weight_with_virus_count) + " Equal or Below 170lbs with virus")
-    # print("\n\nStart of Model Calculations\n")
+    
+    print(str(len(males)) + " Males")
+    print(str(len(females)) + " Females")
+    print(str(len(with_virus_list)) + " Patients with virus")
+    print(str(len(no_virus_list)) + " Patients without virus")
+    print(str(len(male_virus_list)) + " Males with virus")
+    print(str(len(female_virus_list)) + " Female with virus")
+    print(str(positive_blood_with_virus_count) + " Positive blood type who have virus")
+    print(str(negative_blood_with_virus_count) + " Negative blood type who have virus")
+    print(str(heavy_weight_with_virus_count) + " Above 170LBS with virus")
+    print(str(light_weight_with_virus_count) + " Equal or Below 170lbs with virus")
+    print("\n\nStart of Model Calculations\n")
 
     prior_not_virus = (float(no_virus_count) / float(patient_count))
     print("prior for not virus: " + str(prior_not_virus))
@@ -141,9 +141,17 @@ def model():
 
     liklihood_for_weights_heavy_with_virus = (float(heavy_weight_with_virus_count) / float(with_virus_count))
     print("likelihood for weight > 170 given virus: " + str(liklihood_for_weights_heavy_with_virus))
-
+    
+    liklihood_for_weights_heavy_no_virus = 1 - liklihood_for_weights_heavy_with_virus
+    print("likelihood for weight > 170 given not virus: " + str(liklihood_for_weights_heavy_no_virus))
+    
     liklihood_for_weights_light_with_virus = (float(light_weight_with_virus_count) / float(with_virus_count))
     print("likelihood for weight <= 170 given virus: " + str(liklihood_for_weights_light_with_virus))
+
+    liklihood_for_weights_light_no_virus = 1 - liklihood_for_weights_light_with_virus
+    print("likelihood for weight <= 170 given not virus: " + str(liklihood_for_weights_light_no_virus))
+
+
 
 
 model()
