@@ -195,7 +195,7 @@ def model():
 
     print("\nConfusion matrix\n")
     print("        Predicted Class\n")
-    print("Actual    "+str(YY)+"        "+str(YN)+"\nClass       "+ str(NY) + "      " +str(NN))
+    print("Actual    "+str(YY)+"        "+str(NY)+"\nClass       "+ str(YN) + "      " +str(NN))
 
 
 model()
