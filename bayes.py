@@ -3,6 +3,9 @@ from Patient import Patient
 from decimal import *
 import csv
 
+# Kent Sinclair
+# CIS 335 - Data Mining
+# 
 
 def build_array(file_to_open):
     patient_array = []
@@ -155,8 +158,8 @@ def model():
 
     print(str(len(test)) + "size of test data")
     for n in test:
-        no_virus = test_no_virus_count
-        yes_virus = test_with_virus_count
+        no_virus = prior_not_virus
+        yes_virus = prior_virus
         if (n.gender == "male"):
             no_virus *= liklihood_gender_male_negatives
             yes_virus *= liklihood_gender_male_positive
@@ -195,8 +198,7 @@ def model():
 
     print("\nConfusion matrix\n")
     print("        Predicted Class\n")
-    print("Actual    "+str(YY)+"        "+str(NY)+"\nClass       "+ str(YN) + "      " +str(NN))
-
+    print("Actual    "+str(YY)+"        "+str(YN)+"\nClass       "+ str(NY) + "      " +str(NN))
 
 model()
 
