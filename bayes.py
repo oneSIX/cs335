@@ -1,6 +1,6 @@
 from __future__ import division
 from Patient import Patient
-
+from decimal import *
 import csv
 
 
@@ -17,6 +17,9 @@ def build_array(file_to_open):
     return patient_array
 
 # helper methods used by model to filter patients inside model
+# these are generator methods; they create generator objects that contain 
+# a patient in each node and are easily translated into lists which are a bit
+# more maleable in python.
 def filter_gender(patients, value):
     for el in patients:
         if el.gender == value:
@@ -108,21 +111,21 @@ def model():
     light_weight_with_no_count = len(light_weight_no_virus)
 
 
-    # calculating likelihoods using floating point division
-    prior_not_virus = (float(no_virus_count) / float(patient_count))
-    prior_virus = (float(with_virus_count) / float(patient_count))
-    liklihood_gender_female_positive = (float(female_positive_count) / float(with_virus_count))
-    liklihood_gender_female_negative = (float(female_negative_count) / float(no_virus_count))
+    # calculating likelihoods using Decimal division
+    prior_not_virus = (Decimal(no_virus_count) / Decimal(patient_count))
+    prior_virus = (Decimal(with_virus_count) / Decimal(patient_count))
+    liklihood_gender_female_positive = (Decimal(female_positive_count) / Decimal(with_virus_count))
+    liklihood_gender_female_negative = (Decimal(female_negative_count) / Decimal(no_virus_count))
     liklihood_gender_male_positive = 1 - liklihood_gender_female_positive
     liklihood_gender_male_negatives = 1 - liklihood_gender_female_negative
-    liklihood_blood_positive_with_virus = (float(positive_blood_with_virus_count) / float(with_virus_count))
-    liklihood_negative_blood_with_virus = (float(negative_blood_with_virus_count) / float(with_virus_count))
-    liklihood_positive_blood_no_virus = (float(positive_blood_no_virus_count) / float(no_virus_count))
-    liklihood_negative_blood_no_virus = (float(negative_blood_no_virus_count / float(no_virus_count)))
-    liklihood_for_weights_heavy_with_virus = (float(heavy_weight_with_virus_count) / float(with_virus_count))
-    liklihood_for_weights_heavy_no_virus = (float(heavy_weight_with_no_count) / float(no_virus_count))
-    liklihood_for_weights_light_with_virus = (float(light_weight_with_virus_count) / float(with_virus_count))
-    liklihood_for_weights_light_no_virus = (float(light_weight_with_no_count) / float(no_virus_count))
+    liklihood_blood_positive_with_virus = (Decimal(positive_blood_with_virus_count) / Decimal(with_virus_count))
+    liklihood_negative_blood_with_virus = (Decimal(negative_blood_with_virus_count) / Decimal(with_virus_count))
+    liklihood_positive_blood_no_virus = (Decimal(positive_blood_no_virus_count) / Decimal(no_virus_count))
+    liklihood_negative_blood_no_virus = (Decimal(negative_blood_no_virus_count / Decimal(no_virus_count)))
+    liklihood_for_weights_heavy_with_virus = (Decimal(heavy_weight_with_virus_count) / Decimal(with_virus_count))
+    liklihood_for_weights_heavy_no_virus = (Decimal(heavy_weight_with_no_count) / Decimal(no_virus_count))
+    liklihood_for_weights_light_with_virus = (Decimal(light_weight_with_virus_count) / Decimal(with_virus_count))
+    liklihood_for_weights_light_no_virus = (Decimal(light_weight_with_no_count) / Decimal(no_virus_count))
 
     print("prior for not virus: " + str(prior_not_virus))
     print("prior for with virus: " + str(prior_virus))
@@ -150,6 +153,7 @@ def model():
     test_no_virus_list = list(filter_virus(test, "N"))
     test_no_virus_count = len(test_no_virus_list)
 
+    print(str(len(test)) + "size of test data")
     for n in test:
         no_virus = test_no_virus_count
         yes_virus = test_with_virus_count
