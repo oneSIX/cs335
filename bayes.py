@@ -139,7 +139,7 @@ def model():
     print("likelihood for weight <= 170 given virus: " + str(liklihood_for_weights_light_with_virus))
     print("likelihood for weight <= 170 given not virus: " + str(liklihood_for_weights_light_no_virus))
 
-    # I was going to make this pretty but I'm just going to do it all in this method.
+    # prediction stuff
     NN = NY = YN = YY = 0 
 
     line = 1
@@ -188,6 +188,11 @@ def model():
         actual = str(n.virus)
         predicted = "Y" if prediction else "N"
         print(str(line) + " " + actual + " " + predicted)
+
+    print("\nConfusion matrix\n")
+    print("        Predicted Class\n")
+    print("Actual    "+str(YY)+"        "+str(YN)+"\nClass       "+ str(NY) + "      " +str(NN))
+
 
 model()
 
